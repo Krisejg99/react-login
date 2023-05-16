@@ -4,3 +4,15 @@ body {
 	background-color: $gray-900;
 	color: $gray-200;
 }
+
+.container {
+	display: flex;
+	justify-content: center;
+	max-width: 300px;
+
+	#login-form {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+	}
+}
