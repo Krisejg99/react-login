@@ -3,8 +3,9 @@ import './assets/scss/App.scss'
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 import { getMovies } from './services/MovieAPI'
 import { Movie } from './types'
+import LoginForm from './components/LoginForm'
 
-type User = {
+export type User = {
 	username: string
 	password: string
 }
@@ -16,6 +17,8 @@ const App = () => {
 	const [user, setUser] = useState<User>({ username: '', password: '' })
 	const [loggedIn, setLoggedIn] = useState(false)
 	const [movies, setMovies] = useState<Movie[]>([])
+
+	const updateUser = (data: User) => setUser(data)
 
 	// when user submits form update state for 'user'
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -31,31 +34,11 @@ const App = () => {
 		<QueryClientProvider client={queryClient}>
 			<div className='App container'>
 				{!loggedIn
-					? (
-						<form
-							id='login-form'
-							className='mt-5'
-							onSubmit={handleSubmit}
-						>
-							<label htmlFor='username'>Email</label>
-							<input
-								type='text'
-								id='username'
-								onChange={e => setUser({ ...user, username: e.target.value })}
-								value={user.username}
-							/>
-
-							<label htmlFor='password'>Password</label>
-							<input
-								type='password'
-								id='password'
-								onChange={e => setUser({ ...user, password: e.target.value })}
-								value={user.password}
-							/>
-
-							<button className='btn btn-success' type='submit'>Log in</button>
-						</form>
-					)
+					? <LoginForm
+						onSubmit={handleSubmit}
+						user={user}
+						defineUser={updateUser}
+					/>
 					: <div>WELCOME {user.username}</div>
 				}
 			</div>
