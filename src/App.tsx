@@ -1,55 +1,28 @@
-import { useState } from 'react'
+import { Container } from 'react-bootstrap'
 import './assets/scss/App.scss'
-import { QueryClient, QueryClientProvider } from 'react-query'
-import LoginForm from './components/LoginForm'
-import MovieList from './components/MovieList'
-
-export type User = {
-	username: string
-	password: string
-}
-
-const queryClient = new QueryClient()
+import { Route, Routes } from 'react-router-dom'
+import HomePage from './pages/HomePage'
+import NotFound from './pages/NotFound'
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
+import ListPage from './pages/ListPage'
 
 const App = () => {
-	// user state
-	const [user, setUser] = useState<User>({ username: '', password: '' })
-	const [loggedIn, setLoggedIn] = useState(false)
-
-	const updateUser = (data: User) => setUser(data)
-
-	// when user submits form update state for 'user'
-	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault()
-
-		setLoggedIn(true)
-	}
-
 	return (
-		<QueryClientProvider client={queryClient}>
-			<div className='App container'>
-				{!loggedIn
-					? (
-						<>
-							<h1>Login</h1>
+		<div id='App' className='bg-dark text-white'>
+			{/* <Navigation /> */}
 
-							<LoginForm
-								onSubmit={handleSubmit}
-								user={user}
-								defineUser={updateUser}
-							/>
-						</>
-					)
-					: (
-						<>
-							<h1>{user.username}'s Movie List</h1>
+			<Container className='py-3'>
+				<Routes>
+					<Route path='/' element={<HomePage />} />
+					<Route path='/login' element={<LoginPage />} />
+					<Route path='/register' element={<RegisterPage />} />
+					<Route path='/list' element={<ListPage />} />
 
-							<MovieList />
-						</>
-					)
-				}
-			</div>
-		</QueryClientProvider>
+					<Route path='/*' element={<NotFound />} />
+				</Routes>
+			</Container>
+		</div>
 	)
 }
 
