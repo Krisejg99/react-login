@@ -5,15 +5,16 @@ body {
 	color: $gray-200;
 }
 
-.container {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	max-width: 300px;
+// .container {
+// 	display: flex;
+// 	flex-direction: column;
+// 	justify-content: center;
+// 	max-width: 300px;
 
 	#login-form {
 		display: flex;
 		flex-direction: column;
+		max-width: 200px;
 		width: 100%;
 	}
-}
+// }

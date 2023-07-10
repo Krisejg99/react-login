@@ -6,11 +6,12 @@ import NotFound from './pages/NotFound'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import ListPage from './pages/ListPage'
+import Navigation from './components/Navigation'
 
 const App = () => {
 	return (
 		<div id='App' className='bg-dark text-white'>
-			{/* <Navigation /> */}
+			<Navigation />
 
 			<Container className='py-3'>
 				<Routes>
