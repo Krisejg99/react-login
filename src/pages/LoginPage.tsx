@@ -1,54 +1,50 @@
 import React, { useState } from 'react'
-import { QueryClient, QueryClientProvider } from 'react-query'
 import LoginForm from '../components/LoginForm'
-import MovieList from '../components/MovieList'
-
-export type User = {
-	username: string
-	password: string
-}
-
-const queryClient = new QueryClient()
+import { User } from '../types/user'
+import Button from 'react-bootstrap/Button'
 
 const LoginPage = () => {
 	// user state
 	const [user, setUser] = useState<User>({ username: '', password: '' })
 	const [loggedIn, setLoggedIn] = useState(false)
 
-	const updateUser = (data: User) => setUser(data)
-
-	// when user submits form update state for 'user'
-	const handleSubmit = async (e: React.FormEvent) => {
+	const handleLogIn = async (e: React.FormEvent) => {
 		e.preventDefault()
 
 		setLoggedIn(true)
 	}
 
+	const handleLogOut = () => {
+		setLoggedIn(false)
+		setUser({ username: user.username, password: '' })
+	}
+
+	console.log(user)
 	return (
-		<QueryClientProvider client={queryClient}>
-			<div className='App container'>
-				{!loggedIn
-					? (
-						<>
-							<h1>Login</h1>
+		<div className='d-flex flex-column align-items-center'>
+			{!loggedIn
+				? (
+					<LoginForm
+						onSubmit={handleLogIn}
+						user={user}
+						defineUser={(data: User) => setUser(data)}
+					/>
+				)
 
-							<LoginForm
-								onSubmit={handleSubmit}
-								user={user}
-								defineUser={updateUser}
-							/>
-						</>
-					)
-					: (
-						<>
-							<h1>{user.username}'s Movie List</h1>
+				: (
+					<>
+						<span>Logged in as:</span>
 
-							<MovieList />
-						</>
-					)
-				}
-			</div>
-		</QueryClientProvider>
+						<h1>{user.username}</h1>
+
+						<Button
+							variant='danger'
+							onClick={handleLogOut}
+						>Log out</Button>
+					</>
+				)
+			}
+		</div>
 	)
 }
 

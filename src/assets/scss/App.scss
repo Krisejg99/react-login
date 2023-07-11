@@ -1,15 +1,18 @@
 @import 'bootstrap/scss/bootstrap';
 
+h1, h2, h3, h4, h5, h6 {
+	margin-bottom: 0.75em;
+}
+
 body {
 	background-color: $gray-900;
 	color: $gray-200;
 }
 
-// .container {
-// 	display: flex;
-// 	flex-direction: column;
-// 	justify-content: center;
-// 	max-width: 300px;
+.container {
+	// display: flex;
+	// flex-direction: row;
+	// justify-content: center;
 
 	#login-form {
 		display: flex;
@@ -17,4 +20,4 @@ body {
 		max-width: 200px;
 		width: 100%;
 	}
-// }
+}
