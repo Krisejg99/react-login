@@ -1,10 +1,10 @@
 import { useReactTable, ColumnDef, getCoreRowModel, flexRender } from '@tanstack/react-table'
-import { useMemo } from 'react'
-import defaultMovies from '../../data/defaultMovies'
+import { useQuery } from 'react-query'
 import { Movie } from '../types'
+import { getMovies } from '../services/MovieAPI'
 
 const MoviesPage = () => {
-	const data = useMemo(() => defaultMovies, [])
+	const { data = [], isLoading, isError } = useQuery('movies', getMovies)
 
 	const columns: ColumnDef<Movie>[] = [
 		{
@@ -26,6 +26,9 @@ const MoviesPage = () => {
 		columns,
 		getCoreRowModel: getCoreRowModel()
 	})
+
+	if (isLoading) return <span>Loading...</span>
+	if (isError) return <span>Error encountered</span>
 
 	return (
 		<>
