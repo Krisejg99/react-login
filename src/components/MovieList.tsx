@@ -1,25 +1,30 @@
-import { useEffect, useState } from 'react'
-import { Movie } from '../types'
 import { getMovies } from '../services/MovieAPI'
+import { useQuery } from 'react-query'
+import { Button, ListGroup } from 'react-bootstrap'
 
 const MovieList = () => {
-	const [movies, setMovies] = useState<Movie[]>([])
+	const { isLoading, isError, data } = useQuery('movies', getMovies)
 
-	const getMovieList = async () => {
-		const data = await getMovies()
-		setMovies(data)
-	}
-
-	useEffect(() => {
-		getMovieList()
-	}, [])
+	if (isLoading) return <span>Loading...</span>
+	if (isError) return <span>Error encountered</span>
 
 	return (
-		<ul>
-			{movies.map(movie => (
-				<li key={movie.id}>{movie.title}</li>
-			))}
-		</ul>
+		<>
+			{data && (
+				<ListGroup>
+					{data.map(item => (
+						<ListGroup.Item key={item.id}>
+
+							<h2>{item.title}</h2>
+							<p>Status: {item.watched ? 'Watched' : 'Need to watch'}</p>
+							<p>Released: {item.release_year}</p>
+
+						</ListGroup.Item>
+					))}
+				</ListGroup>
+			)}
+		</>
+
 	)
 }
 
