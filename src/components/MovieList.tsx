@@ -1,6 +1,6 @@
 import { getMovies } from '../services/MovieAPI'
 import { useQuery } from 'react-query'
-import { Button, ListGroup } from 'react-bootstrap'
+import { ListGroup } from 'react-bootstrap'
 
 const MovieList = () => {
 	const { isLoading, isError, data } = useQuery('movies', getMovies)
