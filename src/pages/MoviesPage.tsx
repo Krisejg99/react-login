@@ -8,10 +8,6 @@ const MoviesPage = () => {
 
 	const columns: ColumnDef<Movie>[] = [
 		{
-			header: 'ID',
-			accessorKey: 'id',
-		},
-		{
 			header: 'Title',
 			accessorKey: 'title',
 		},
@@ -38,7 +34,10 @@ const MoviesPage = () => {
 					{table.getHeaderGroups().map(headerGroup => (
 						<tr key={headerGroup.id}>
 							{headerGroup.headers.map(header => (
-								<th key={header.id}>
+								<th
+									key={header.id}
+									className='pe-4'
+								>
 									{flexRender(
 										header.column.columnDef.header,
 										header.getContext(),
@@ -50,11 +49,21 @@ const MoviesPage = () => {
 				</thead>
 
 				<tbody>
-					<tr>
-						<td>
-
-						</td>
-					</tr>
+					{table.getRowModel().rows.map(row => (
+						<tr key={row.id}>
+							{row.getVisibleCells().map(cell => (
+								<td
+									key={cell.id}
+									className='pe-4'
+								>
+									{flexRender(
+										cell.column.columnDef.cell,
+										cell.getContext(),
+									)}
+								</td>
+							))}
+						</tr>
+					))}
 				</tbody>
 			</table >
 		</>
