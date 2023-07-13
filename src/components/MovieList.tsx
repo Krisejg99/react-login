@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Movie } from '../types'
 import { getMovies } from '../services/MovieAPI'
 
@@ -10,7 +10,9 @@ const MovieList = () => {
 		setMovies(data)
 	}
 
-	getMovieList()
+	useEffect(() => {
+		getMovieList()
+	}, [])
 
 	return (
 		<ul>
