@@ -2,16 +2,21 @@ import React, { useState } from 'react'
 import LoginForm from '../components/LoginForm'
 import { User } from '../types/user'
 import Button from 'react-bootstrap/Button'
+import { useNavigate } from 'react-router'
 
 const LoginPage = () => {
 	// user state
 	const [user, setUser] = useState<User>({ username: '', password: '' })
 	const [loggedIn, setLoggedIn] = useState(false)
 
+	const navigate = useNavigate()
+
 	const handleLogIn = async (e: React.FormEvent) => {
 		e.preventDefault()
 
 		setLoggedIn(true)
+
+		navigate('/movies')
 	}
 
 	const handleLogOut = () => {
