@@ -1,6 +1,7 @@
 import Container from 'react-bootstrap/Container'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
+import { NavLink } from 'react-router-dom'
 
 const Navigation = () => {
 	return (
@@ -10,8 +11,8 @@ const Navigation = () => {
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="ms-auto">
-						<Nav.Link href="/movies">Movies</Nav.Link>
-						<Nav.Link href="/login">Login</Nav.Link>
+						<Nav.Link as={NavLink} to="/movies">Movies</Nav.Link>
+						<Nav.Link as={NavLink} to="/login">Login</Nav.Link>
 					</Nav>
 				</Navbar.Collapse>
 			</Container>
