@@ -5,43 +5,64 @@ import { useNavigate } from 'react-router'
 import useLocaleStorage from '../hooks/useLocaleStorage'
 import { getUser } from '../services/UserAPI'
 import { LoginContext } from '../contexts/LoginContextProvider'
+import { Link } from 'react-router-dom'
 
 const LoginPage = () => {
 	const [login, setLogin] = useLocaleStorage<null | string>('login', null)
 	const [userInputUsername, setUserInputUsername] = useState<string>('')
 	const [userInputPassword, setUserInputPassword] = useState<string>('')
+	const [invalidLogin, setInvalidLogin] = useState(false)
 	const navigate = useNavigate()
 
-	const getDBUser = async (username: string) => {
+	const checkUserInDB = async (username: string) => {
 		const user = await getUser(username)
-		setUserInputUsername(user.username)
+
+		if (!user) {
+			setInvalidLogin(true)
+			return null
+		}
+
+		return user
 	}
 
 	useEffect(() => {
 		if (!login) return
 
-		getDBUser(login)
+		(async () => {
+			const user = await checkUserInDB(login)
 
-	}, [login])
+			user ? setLogin(user.username) : setLogin(null)
+		})()
 
-	console.log('username: ', userInputUsername, 'password: ', userInputPassword)
+	}, [login, setLogin])
+
+	// console.log('username: ', userInputUsername, 'password: ', userInputPassword)
 
 	return (
 		<div className='d-flex flex-column align-items-center'>
 			<LoginContext.Consumer>
 				{loginContext => loginContext && !loginContext.login
 					? (
-						<LoginForm
-							onSubmit={async (e: React.FormEvent) => {
-								e.preventDefault()
+						<>
+							<LoginForm
+								onSubmit={async (e: React.FormEvent) => {
+									e.preventDefault()
 
-								loginContext.changeLogin(userInputUsername)
-								navigate(-1)
-							}}
-							user={{ username: userInputUsername, password: userInputPassword }}
-							updateUsername={(username) => setUserInputUsername(username)}
-							updatePassword={(password) => setUserInputPassword(password)}
-						/>
+									const user = await checkUserInDB(userInputUsername)
+									if (!user) return
+
+									loginContext.changeLogin(userInputUsername)
+									navigate(-1)
+								}}
+								user={{ username: userInputUsername, password: userInputPassword }}
+								updateUsername={(username) => setUserInputUsername(username)}
+								updatePassword={(password) => setUserInputPassword(password)}
+								invalidLoginDetails={invalidLogin}
+							/>
+
+							<small>Don't have an account? <Link to={'/register'}>Register</Link></small>
+							<small>Forgot your password? Yikes</small>
+						</>
 					)
 
 					: (
