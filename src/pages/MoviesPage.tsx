@@ -31,7 +31,7 @@ const MoviesPage = () => {
 
 	return (
 		<LoginContext.Consumer>
-			{isLoggedIn => !isLoggedIn
+			{value => value?.isLoggedIn
 				? (
 					<table>
 						<thead>

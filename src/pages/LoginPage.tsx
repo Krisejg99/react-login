@@ -3,31 +3,32 @@ import LoginForm from '../components/LoginForm'
 import { User } from '../types/user'
 import Button from 'react-bootstrap/Button'
 import { useNavigate } from 'react-router'
+import useLocaleStorage from '../hooks/useLocaleStorage'
 
 const LoginPage = () => {
 	// user state
 	const [user, setUser] = useState<User>({ username: '', password: '' })
-	const [loggedIn, setLoggedIn] = useState(false)
+	const [isLoggedIn, setIsLoggedIn] = useLocaleStorage<boolean>('isLoggedIn', false)
 
 	const navigate = useNavigate()
 
 	const handleLogIn = async (e: React.FormEvent) => {
 		e.preventDefault()
 
-		setLoggedIn(true)
+		setIsLoggedIn(true)
 
 		navigate('/movies')
 	}
 
 	const handleLogOut = () => {
-		setLoggedIn(false)
+		setIsLoggedIn(false)
 		setUser({ username: user.username, password: '' })
 	}
 
 	console.log(user)
 	return (
 		<div className='d-flex flex-column align-items-center'>
-			{!loggedIn
+			{!isLoggedIn
 				? (
 					<LoginForm
 						onSubmit={handleLogIn}
