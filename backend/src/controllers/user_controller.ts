@@ -9,10 +9,7 @@ import prisma from '../prisma'
  */
 export const index = async (req: Request, res: Response) => {
 	const users = await prisma.user.findMany()
-	res.send({
-		status: 'success',
-		data: users,
-	})
+	res.send({ users })
 }
 
 // /**
@@ -34,10 +31,7 @@ export const store = async (req: Request, res: Response) => {
 
 	console.log(user)
 
-	res.send({
-		status: 'success',
-		data: user,
-	})
+	res.send({ user })
 }
 
 // /**

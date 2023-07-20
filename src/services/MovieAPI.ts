@@ -8,5 +8,5 @@ const BASE_URL = 'http://localhost:3000'
  */
 export const getMovies = async () => {
 	const res = await axios.get(`${BASE_URL}/movies`)
-	return res.data as Movie[]
+	return res.data.movies as Movie[]
 }
