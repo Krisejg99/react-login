@@ -15,10 +15,6 @@ const MoviesPage = () => {
 			header: 'Realse Year',
 			accessorKey: 'release_year',
 		},
-		{
-			header: 'Watched',
-			accessorKey: 'watched',
-		},
 	]
 
 	const table = useReactTable({
