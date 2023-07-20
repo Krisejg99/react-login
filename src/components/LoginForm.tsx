@@ -1,13 +1,15 @@
 import React, { } from 'react'
-import { User } from '../types/user'
+import { User } from '../types'
 
 interface IProps {
 	onSubmit: (e: React.FormEvent) => Promise<void>
 	user: User
-	defineUser: (data: User) => void
+	updateUsername: (username: string) => void
+	updatePassword: (password: string) => void
+
 }
 
-const LoginForm: React.FC<IProps> = ({ onSubmit, user, defineUser }) => {
+const LoginForm: React.FC<IProps> = ({ onSubmit, user, updateUsername, updatePassword }) => {
 
 	return (
 		<>
@@ -22,7 +24,7 @@ const LoginForm: React.FC<IProps> = ({ onSubmit, user, defineUser }) => {
 				<input
 					type='text'
 					id='username'
-					onChange={e => defineUser({ ...user, username: e.target.value })}
+					onChange={e => updateUsername(e.target.value)}
 					value={user.username}
 				/>
 
@@ -30,7 +32,7 @@ const LoginForm: React.FC<IProps> = ({ onSubmit, user, defineUser }) => {
 				<input
 					type='password'
 					id='password'
-					onChange={e => defineUser({ ...user, password: e.target.value })}
+					onChange={e => updatePassword(e.target.value)}
 					value={user.password}
 				/>
 

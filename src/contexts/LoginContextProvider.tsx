@@ -2,8 +2,8 @@ import React, { createContext } from 'react'
 import useLocaleStorage from '../hooks/useLocaleStorage'
 
 type LoginContextType = {
-	login: false | string
-	changeLogin: (value: false | string) => void
+	login: null | string
+	changeLogin: (value: null | string) => void
 }
 
 export const LoginContext = createContext<LoginContextType | null>(null)
@@ -13,9 +13,9 @@ type IProps = {
 }
 
 const LoginContextProvider: React.FC<IProps> = ({ children }) => {
-	const [login, setLogin] = useLocaleStorage<false | string>('login', false)
+	const [login, setLogin] = useLocaleStorage<null | string>('login', null)
 
-	const changeLogin = (value: false | string) => {
+	const changeLogin = (value: null | string) => {
 		setLogin(value)
 	}
 

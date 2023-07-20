@@ -1,56 +1,68 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import LoginForm from '../components/LoginForm'
-import { User } from '../types/user'
 import Button from 'react-bootstrap/Button'
 import { useNavigate } from 'react-router'
 import useLocaleStorage from '../hooks/useLocaleStorage'
+import { getUser } from '../services/UserAPI'
+import { LoginContext } from '../contexts/LoginContextProvider'
 
 const LoginPage = () => {
-	// user state
-	const [user, setUser] = useState<User>({ username: '', password: '' })
-	const [isLoggedIn, setIsLoggedIn] = useLocaleStorage<false | string>('login', false)
-
+	const [login, setLogin] = useLocaleStorage<null | string>('login', null)
+	const [userInputUsername, setUserInputUsername] = useState<string>('')
+	const [userInputPassword, setUserInputPassword] = useState<string>('')
 	const navigate = useNavigate()
 
-	const handleLogIn = async (e: React.FormEvent) => {
-		e.preventDefault()
-
-		setIsLoggedIn(user.username)
-
-		navigate('/movies')
+	const getDBUser = async (username: string) => {
+		const user = await getUser(username)
+		setUserInputUsername(user.username)
 	}
 
-	const handleLogOut = () => {
-		setIsLoggedIn(false)
-		setUser({ username: user.username, password: '' })
-	}
+	useEffect(() => {
+		if (!login) return
 
-	console.log(user)
+		getDBUser(login)
+
+	}, [login])
+
+	console.log('username: ', userInputUsername, 'password: ', userInputPassword)
+
 	return (
 		<div className='d-flex flex-column align-items-center'>
-			{!isLoggedIn
-				? (
-					<LoginForm
-						onSubmit={handleLogIn}
-						user={user}
-						defineUser={(data: User) => setUser(data)}
-					/>
-				)
+			<LoginContext.Consumer>
+				{loginContext => loginContext && !loginContext.login
+					? (
+						<LoginForm
+							onSubmit={async (e: React.FormEvent) => {
+								e.preventDefault()
 
-				: (
-					<>
-						<span>Logged in as:</span>
+								loginContext.changeLogin(userInputUsername)
+								navigate(-1)
+							}}
+							user={{ username: userInputUsername, password: userInputPassword }}
+							updateUsername={(username) => setUserInputUsername(username)}
+							updatePassword={(password) => setUserInputPassword(password)}
+						/>
+					)
 
-						<h1>{user.username}</h1>
+					: (
+						<>
+							<span>Logged in as:</span>
 
-						<Button
-							variant='danger'
-							onClick={handleLogOut}
-						>Log out</Button>
-					</>
-				)
-			}
-		</div>
+							<h1>{login}</h1>
+
+							<Button
+								variant='danger'
+								onClick={() => {
+									loginContext?.changeLogin(null)
+									setUserInputPassword('')
+									navigate(-1)
+								}}
+							>Log out</Button>
+						</>
+					)
+				}
+			</LoginContext.Consumer>
+		</div >
 	)
 }
 
