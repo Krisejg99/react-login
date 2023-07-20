@@ -9,14 +9,22 @@ import prisma from '../prisma'
  */
 export const index = async (req: Request, res: Response) => {
 	const users = await prisma.user.findMany()
-	res.send({ users })
+
+	res.send(users)
 }
 
-// /**
-//  * Get a single resource
-//  */
-// export const show = async (req: Request, res: Response) => {
-// }
+/**
+ * Get a single resource
+ */
+export const show = async (req: Request, res: Response) => {
+	const user = await prisma.user.findUnique({
+		where: {
+			name: req.params.username,
+		}
+	})
+
+	res.send(user)
+}
 
 /**
  * Create a resource
@@ -31,7 +39,7 @@ export const store = async (req: Request, res: Response) => {
 
 	console.log(user)
 
-	res.send({ user })
+	res.send(user)
 }
 
 // /**

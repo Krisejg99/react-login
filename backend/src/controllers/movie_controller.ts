@@ -9,7 +9,7 @@ import prisma from '../prisma'
  */
 export const index = async (req: Request, res: Response) => {
 	const movies = await prisma.movie.findMany()
-	res.send({ movies })
+	res.send(movies)
 }
 
 // /**

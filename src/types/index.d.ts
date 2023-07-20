@@ -4,3 +4,8 @@ export type Movie = {
 	release_year: number
 	watched: boolean
 }
+
+export type User = {
+	username: string
+	password: string
+}

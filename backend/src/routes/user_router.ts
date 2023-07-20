@@ -2,7 +2,7 @@
  * Router Template
  */
 import express from 'express'
-import { index, store } from '../controllers/user_controller'
+import { index, show, store } from '../controllers/user_controller'
 const router = express.Router()
 
 /**
@@ -10,10 +10,10 @@ const router = express.Router()
  */
 router.get('/', index)
 
-// /**
-//  * GET /users/:userId
-//  */
-// router.get('/:userId', show)
+/**
+ * GET /users/:username
+ */
+router.get('/:username', show)
 
 /**
  * POST /users
