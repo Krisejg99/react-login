@@ -8,14 +8,14 @@ import useLocaleStorage from '../hooks/useLocaleStorage'
 const LoginPage = () => {
 	// user state
 	const [user, setUser] = useState<User>({ username: '', password: '' })
-	const [isLoggedIn, setIsLoggedIn] = useLocaleStorage<boolean>('isLoggedIn', false)
+	const [isLoggedIn, setIsLoggedIn] = useLocaleStorage<false | string>('login', false)
 
 	const navigate = useNavigate()
 
 	const handleLogIn = async (e: React.FormEvent) => {
 		e.preventDefault()
 
-		setIsLoggedIn(true)
+		setIsLoggedIn(user.username)
 
 		navigate('/movies')
 	}

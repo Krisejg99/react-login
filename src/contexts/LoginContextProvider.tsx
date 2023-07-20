@@ -2,8 +2,8 @@ import React, { createContext } from 'react'
 import useLocaleStorage from '../hooks/useLocaleStorage'
 
 type LoginContextType = {
-	isLoggedIn: boolean
-	toggleIsLoggedIn: () => void
+	login: false | string
+	changeLogin: (value: false | string) => void
 }
 
 export const LoginContext = createContext<LoginContextType | null>(null)
@@ -13,16 +13,16 @@ type IProps = {
 }
 
 const LoginContextProvider: React.FC<IProps> = ({ children }) => {
-	const [isLoggedIn, setIsLoggedIn] = useLocaleStorage<boolean>('isLoggedIn', false)
+	const [login, setLogin] = useLocaleStorage<false | string>('login', false)
 
-	const toggleIsLoggedIn = () => {
-		setIsLoggedIn(!isLoggedIn)
+	const changeLogin = (value: false | string) => {
+		setLogin(value)
 	}
 
-	console.log(isLoggedIn)
+	console.log('login', login)
 
 	return (
-		<LoginContext.Provider value={{ isLoggedIn, toggleIsLoggedIn }}>
+		<LoginContext.Provider value={{ login, changeLogin }}>
 			{children}
 		</LoginContext.Provider>
 	)
