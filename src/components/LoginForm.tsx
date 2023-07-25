@@ -6,16 +6,15 @@ interface IProps {
 	user: User
 	updateUsername: (username: string) => void
 	updatePassword: (password: string) => void
-	invalidLoginDetails: boolean
+	invalidDetails: boolean
+	btnText: string
 
 }
 
-const LoginForm: React.FC<IProps> = ({ onSubmit, user, updateUsername, updatePassword, invalidLoginDetails }) => {
+const LoginForm: React.FC<IProps> = ({ onSubmit, user, updateUsername, updatePassword, invalidDetails, btnText }) => {
 	return (
 		<>
-			<h1 className='mb-5'>Login</h1>
-
-			{invalidLoginDetails && (
+			{invalidDetails && (
 				<span className='text-danger mb-2'>Incorrect password or username</span>
 			)}
 
@@ -42,7 +41,7 @@ const LoginForm: React.FC<IProps> = ({ onSubmit, user, updateUsername, updatePas
 					value={user.password}
 				/>
 
-				<button className='btn btn-success mb-2 ms-5 me-5' type='submit'>Log in</button>
+				<button className='btn btn-success mb-2 ms-5 me-5' type='submit'>{btnText}</button>
 			</form>
 		</>
 	)
