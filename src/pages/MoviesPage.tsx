@@ -2,12 +2,14 @@ import { useReactTable, ColumnDef, getCoreRowModel, flexRender } from '@tanstack
 import { useQuery } from 'react-query'
 import { Movie } from '../types'
 import { getMovies } from '../services/MovieAPI'
-import { LoginContext } from '../contexts/LoginContextProvider'
 import Button from 'react-bootstrap/Button'
 import { Link } from 'react-router-dom'
+import useLoginContext from '../hooks/useLoginContext'
 
 const MoviesPage = () => {
 	const { data = [], isLoading, isError } = useQuery('movies', getMovies)
+	const loginContext = useLoginContext()
+
 
 	const columns: ColumnDef<Movie>[] = [
 		{
@@ -30,8 +32,8 @@ const MoviesPage = () => {
 	if (isError) return <span>Error encountered</span>
 
 	return (
-		<LoginContext.Consumer>
-			{loginContext => loginContext?.login
+		<>
+			{loginContext.login
 				? (
 					<table>
 						<thead>
@@ -83,7 +85,7 @@ const MoviesPage = () => {
 					</>
 				)
 			}
-		</LoginContext.Consumer>
+		</>
 	)
 }
 

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import LoginForm from '../components/LoginForm'
 import Button from 'react-bootstrap/Button'
+import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router'
 import useLocaleStorage from '../hooks/useLocaleStorage'
 import { getUser } from '../services/UserAPI'
-import { LoginContext } from '../contexts/LoginContextProvider'
-import { Link } from 'react-router-dom'
+import useLoginContext from '../hooks/useLoginContext'
 
 const LoginPage = () => {
 	const [login, setLogin] = useLocaleStorage<null | string>('login', null)
@@ -13,6 +13,7 @@ const LoginPage = () => {
 	const [userInputPassword, setUserInputPassword] = useState<string>('')
 	const [invalidLogin, setInvalidLogin] = useState(false)
 	const navigate = useNavigate()
+	const loginContext = useLoginContext()
 
 	const checkUserInDB = async (username: string) => {
 		const user = await getUser(username)
@@ -40,50 +41,51 @@ const LoginPage = () => {
 
 	return (
 		<div className='d-flex flex-column align-items-center'>
-			<LoginContext.Consumer>
-				{loginContext => loginContext && !loginContext.login
-					? (
-						<>
-							<LoginForm
-								onSubmit={async (e: React.FormEvent) => {
-									e.preventDefault()
+			{!loginContext.login
+				? (
+					<>
+						<h1 className='mb-5'>Login</h1>
 
-									const user = await checkUserInDB(userInputUsername)
-									if (!user) return
+						<LoginForm
+							onSubmit={async (e: React.FormEvent) => {
+								e.preventDefault()
 
-									loginContext.changeLogin(userInputUsername)
-									navigate(-1)
-								}}
-								user={{ username: userInputUsername, password: userInputPassword }}
-								updateUsername={(username) => setUserInputUsername(username)}
-								updatePassword={(password) => setUserInputPassword(password)}
-								invalidLoginDetails={invalidLogin}
-							/>
+								const user = await checkUserInDB(userInputUsername)
+								if (!user) return
 
-							<small>Don't have an account? <Link to={'/register'}>Register</Link></small>
-							<small>Forgot your password? Yikes</small>
-						</>
-					)
+								loginContext.changeLogin(userInputUsername)
+								navigate(-1)
+							}}
+							user={{ username: userInputUsername, password: userInputPassword }}
+							updateUsername={(username) => setUserInputUsername(username)}
+							updatePassword={(password) => setUserInputPassword(password)}
+							invalidDetails={invalidLogin}
+							btnText='Login'
+						/>
 
-					: (
-						<>
-							<span>Logged in as:</span>
+						<small>Don't have an account? <Link to={'/register'}>Register</Link></small>
+						<small>Forgot your password? Yikes</small>
+					</>
+				)
 
-							<h1>{login}</h1>
+				: (
+					<>
+						<span>Logged in as:</span>
 
-							<Button
-								variant='danger'
-								onClick={() => {
-									loginContext?.changeLogin(null)
-									setUserInputPassword('')
-									navigate(-1)
-								}}
-							>Log out</Button>
-						</>
-					)
-				}
-			</LoginContext.Consumer>
-		</div >
+						<h1>{login}</h1>
+
+						<Button
+							variant='danger'
+							onClick={() => {
+								loginContext?.changeLogin(null)
+								setUserInputPassword('')
+								navigate(-1)
+							}}
+						>Log out</Button>
+					</>
+				)
+			}
+		</div>
 	)
 }
 
