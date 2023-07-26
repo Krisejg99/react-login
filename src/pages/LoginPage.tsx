@@ -9,9 +9,7 @@ import useLoginContext from '../hooks/useLoginContext'
 
 const LoginPage = () => {
 	const [login, setLogin] = useLocaleStorage<null | string>('login', null)
-	const [userInputUsername, setUserInputUsername] = useState<string>('')
-	const [userInputPassword, setUserInputPassword] = useState<string>('')
-	const [invalidLogin, setInvalidLogin] = useState(false)
+	const [invalidLogin, setInvalidLogin] = useState<false | string>(false)
 	const navigate = useNavigate()
 	const loginContext = useLoginContext()
 
@@ -19,11 +17,19 @@ const LoginPage = () => {
 		const user = await getUser(username)
 
 		if (!user) {
-			setInvalidLogin(true)
+			setInvalidLogin('Incorrect password or username')
 			return null
 		}
 
 		return user
+	}
+
+	const handleSubmit = async (username: string, password: string) => {
+		const user = await checkUserInDB(username)
+		if (!user) return
+
+		loginContext.changeLogin(username)
+		navigate(-1)
 	}
 
 	useEffect(() => {
@@ -37,8 +43,6 @@ const LoginPage = () => {
 
 	}, [login, setLogin])
 
-	// console.log('username: ', userInputUsername, 'password: ', userInputPassword)
-
 	return (
 		<div className='d-flex flex-column align-items-center'>
 			{!loginContext.login
@@ -47,20 +51,9 @@ const LoginPage = () => {
 						<h1 className='mb-5'>Login</h1>
 
 						<LoginForm
-							onSubmit={async (e: React.FormEvent) => {
-								e.preventDefault()
-
-								const user = await checkUserInDB(userInputUsername)
-								if (!user) return
-
-								loginContext.changeLogin(userInputUsername)
-								navigate(-1)
-							}}
-							user={{ username: userInputUsername, password: userInputPassword }}
-							updateUsername={(username) => setUserInputUsername(username)}
-							updatePassword={(password) => setUserInputPassword(password)}
-							invalidDetails={invalidLogin}
+							handleSubmit={(username: string, password: string) => handleSubmit(username, password)}
 							btnText='Login'
+							generalAlert={invalidLogin}
 						/>
 
 						<small>Don't have an account? <Link to={'/register'}>Register</Link></small>
@@ -77,8 +70,7 @@ const LoginPage = () => {
 						<Button
 							variant='danger'
 							onClick={() => {
-								loginContext?.changeLogin(null)
-								setUserInputPassword('')
+								loginContext.changeLogin(null)
 								navigate(-1)
 							}}
 						>Log out</Button>
