@@ -25,8 +25,8 @@ const RegisterPage = () => {
 
 			<RegisterForm
 				handleSubmit={(username: string, password: string) => handleSubmit(username, password)}
-				generalAlert={invalidRegister}
 				btnText='Register'
+				generalAlert={invalidRegister}
 				usernameMinLength={3}
 				passwordMinLength={8}
 			/>

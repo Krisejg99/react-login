@@ -3,15 +3,12 @@ import React, { useState, useEffect } from 'react'
 interface IProps {
 	handleSubmit: (username: string, password: string) => void
 	btnText: string
-	// generalAlert?: string
-	// usernameAlert?: string
-	// passwordAlert?: string
-	usernameMinLength: number
-	passwordMinLength: number
 	generalAlert: false | string
+	usernameMinLength?: number
+	passwordMinLength?: number
 }
 
-const LoginForm: React.FC<IProps> = ({ handleSubmit, btnText, usernameMinLength, passwordMinLength, generalAlert }) => {
+const LoginForm: React.FC<IProps> = ({ handleSubmit, btnText, generalAlert, usernameMinLength = 0, passwordMinLength = 0 }) => {
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
 	const [usernameAlert, setUsernameAlert] = useState('')
@@ -64,6 +61,7 @@ const LoginForm: React.FC<IProps> = ({ handleSubmit, btnText, usernameMinLength,
 					id='password'
 					onChange={e => setPassword(e.target.value)}
 					value={password}
+					required
 				/>
 
 				{passwordAlert && <span className='text-danger mb-2 small-text'>{passwordAlert}</span>}
