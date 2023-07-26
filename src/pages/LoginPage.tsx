@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import LoginForm from '../components/LoginForm'
 import Button from 'react-bootstrap/Button'
 import { Link } from 'react-router-dom'
@@ -14,22 +14,21 @@ const LoginPage = () => {
 	const loginContext = useLoginContext()
 
 	const checkUserInDB = async (username: string) => {
-		const user = await getUser(username)
-
-		if (!user) {
-			setInvalidLogin('Incorrect password or username')
-			return null
-		}
-
-		return user
+		const res = await getUser(username)
+		return res ? res : null
 	}
 
 	const handleSubmit = async (username: string, password: string) => {
 		const user = await checkUserInDB(username)
-		if (!user) return
+
+		console.log(user)
+
+		if (!user || user.password !== password) {
+			return setInvalidLogin('Incorrect password or username')
+		}
 
 		loginContext.changeLogin(username)
-		navigate(-1)
+		navigate('/')
 	}
 
 	useEffect(() => {
