@@ -1,48 +1,75 @@
-import React, { } from 'react'
-import { User } from '../types'
+import React, { useState, useEffect } from 'react'
 
 interface IProps {
-	onSubmit: (e: React.FormEvent) => Promise<void>
-	user: User
-	updateUsername: (username: string) => void
-	updatePassword: (password: string) => void
-	invalidDetails: boolean
+	handleSubmit: (username: string, password: string) => void
 	btnText: string
-
+	// generalAlert?: string
+	// usernameAlert?: string
+	// passwordAlert?: string
+	usernameMinLength: number
+	passwordMinLength: number
+	generalAlert: false | string
 }
 
-const LoginForm: React.FC<IProps> = ({ onSubmit, user, updateUsername, updatePassword, invalidDetails, btnText }) => {
+const LoginForm: React.FC<IProps> = ({ handleSubmit, btnText, usernameMinLength, passwordMinLength, generalAlert }) => {
+	const [username, setUsername] = useState('')
+	const [password, setPassword] = useState('')
+	const [usernameAlert, setUsernameAlert] = useState('')
+	const [passwordAlert, setPasswordAlert] = useState('')
+
+	const invalidUsername = username.length < usernameMinLength
+	const invalidPassword = password.length < passwordMinLength
+
+	useEffect(() => {
+		setUsernameAlert('')
+		setPasswordAlert('')
+
+		if (invalidUsername && username.length > 0) {
+			setUsernameAlert('Username must be at least 3 characters')
+		}
+		else if (invalidPassword && password.length > 0) {
+			setPasswordAlert('Password must be at least 8 characters')
+		}
+
+	}, [invalidUsername, invalidPassword, username, password])
+
 	return (
 		<>
-			{invalidDetails && (
-				<span className='text-danger mb-2'>Incorrect password or username</span>
-			)}
+			{generalAlert && <span className='text-danger mb-2'>{generalAlert}</span>}
 
 			<form
 				className='login-form'
-				onSubmit={onSubmit}
+				onSubmit={e => {
+					e.preventDefault()
+
+					handleSubmit(username, password)
+				}}
 			>
 				<label htmlFor='username'>Username</label>
 				<input
 					type='text'
 					className='mb-2'
 					id='username'
-					onChange={e => updateUsername(e.target.value)}
-					value={user.username}
+					onChange={e => setUsername(e.target.value)}
+					value={username}
 					required
 				/>
+
+				{usernameAlert && <span className='text-danger mb-2 small-text'>{usernameAlert}</span>}
 
 				<label htmlFor='password'>Password</label>
 				<input
 					type='password'
 					className='mb-2'
 					id='password'
-					onChange={e => updatePassword(e.target.value)}
-					value={user.password}
+					onChange={e => setPassword(e.target.value)}
+					value={password}
 				/>
 
-				<button className='btn btn-success mb-2 ms-5 me-5' type='submit'>{btnText}</button>
-			</form>
+				{passwordAlert && <span className='text-danger mb-2 small-text'>{passwordAlert}</span>}
+
+				<button className='btn btn-success mb-2 ms-5 me-5' type='submit' disabled={invalidUsername || invalidPassword}>{btnText}</button>
+			</form >
 		</>
 	)
 }
