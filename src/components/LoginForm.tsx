@@ -39,6 +39,7 @@ const LoginForm: React.FC<IProps> = ({ handleSubmit, btnText, generalAlert, user
 				onSubmit={e => {
 					e.preventDefault()
 
+					setPassword('')
 					handleSubmit(username, password)
 				}}
 			>
