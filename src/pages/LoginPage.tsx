@@ -1,17 +1,15 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import LoginForm from '../components/LoginForm'
 import Button from 'react-bootstrap/Button'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router'
-import useLocaleStorage from '../hooks/useLocaleStorage'
 import { getUser } from '../services/UserAPI'
 import useLoginContext from '../hooks/useLoginContext'
 
 const LoginPage = () => {
-	const [login, setLogin] = useLocaleStorage<null | string>('login', null)
 	const [invalidLogin, setInvalidLogin] = useState<false | string>(false)
 	const navigate = useNavigate()
-	const loginContext = useLoginContext()
+	const { login, changeLogin } = useLoginContext()
 
 	const checkUserInDB = async (username: string) => {
 		const res = await getUser(username)
@@ -27,24 +25,13 @@ const LoginPage = () => {
 			return setInvalidLogin('Incorrect password or username')
 		}
 
-		loginContext.changeLogin(username)
+		changeLogin(username)
 		navigate('/')
 	}
 
-	useEffect(() => {
-		if (!login) return
-
-		(async () => {
-			const user = await checkUserInDB(login)
-
-			user ? setLogin(user.username) : setLogin(null)
-		})()
-
-	}, [login, setLogin])
-
 	return (
 		<div className='d-flex flex-column align-items-center'>
-			{!loginContext.login
+			{!login
 				? (
 					<>
 						<h1 className='mb-5'>Login</h1>
@@ -69,8 +56,8 @@ const LoginPage = () => {
 						<Button
 							variant='danger'
 							onClick={() => {
-								loginContext.changeLogin(null)
-								navigate(-1)
+								changeLogin(null)
+								navigate('/login')
 							}}
 						>Log out</Button>
 					</>
