@@ -10,7 +10,6 @@ const MoviesPage = () => {
 	const { data = [], isLoading, isError } = useQuery('movies', getMovies)
 	const { login } = useLoginContext()
 
-
 	const columns: ColumnDef<Movie>[] = [
 		{
 			header: 'Title',
@@ -45,7 +44,7 @@ const MoviesPage = () => {
 										{headerGroup.headers.map(header => (
 											<th
 												key={header.id}
-												className='pe-4'
+												className='pe-4 pb-2'
 											>
 												{flexRender(
 													header.column.columnDef.header,
