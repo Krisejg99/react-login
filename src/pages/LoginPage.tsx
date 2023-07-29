@@ -2,13 +2,14 @@ import { useState } from 'react'
 import LoginForm from '../components/LoginForm'
 import Button from 'react-bootstrap/Button'
 import { Link } from 'react-router-dom'
-import { useNavigate } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import { getUser } from '../services/UserAPI'
 import useLoginContext from '../hooks/useLoginContext'
 
 const LoginPage = () => {
 	const [invalidLogin, setInvalidLogin] = useState<false | string>(false)
 	const navigate = useNavigate()
+	const location = useLocation()
 	const { login, changeLogin } = useLoginContext()
 
 	const checkUserInDB = async (username: string) => {
@@ -40,6 +41,9 @@ const LoginPage = () => {
 							handleSubmit={(username: string, password: string) => handleSubmit(username, password)}
 							btnText='Login'
 							generalAlert={invalidLogin}
+							usernameMinLength={0}
+							passwordMinLength={0}
+							preLoadedUsername={location.state ? location.state.newUser : ''}
 						/>
 
 						<small>Don't have an account? <Link to={'/register'}>Register</Link></small>

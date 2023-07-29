@@ -4,12 +4,13 @@ interface IProps {
 	handleSubmit: (username: string, password: string) => void
 	btnText: string
 	generalAlert: false | string
-	usernameMinLength?: number
-	passwordMinLength?: number
+	usernameMinLength: number
+	passwordMinLength: number
+	preLoadedUsername: string
 }
 
-const LoginForm: React.FC<IProps> = ({ handleSubmit, btnText, generalAlert, usernameMinLength = 0, passwordMinLength = 0 }) => {
-	const [username, setUsername] = useState('')
+const LoginForm: React.FC<IProps> = ({ handleSubmit, btnText, generalAlert, usernameMinLength = 0, passwordMinLength = 0, preLoadedUsername }) => {
+	const [username, setUsername] = useState(preLoadedUsername)
 	const [password, setPassword] = useState('')
 	const [usernameAlert, setUsernameAlert] = useState('')
 	const [passwordAlert, setPasswordAlert] = useState('')
