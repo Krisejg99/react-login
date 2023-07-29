@@ -46,6 +46,9 @@ const RegisterPage = () => {
 				: <>
 					<h1 className='mb-5'>Register</h1>
 
+					<span>WARNING!</span>
+					<p>Do not use a real password</p>
+
 					<RegisterForm
 						handleSubmit={(username: string, password: string) => handleSubmit(username, password)}
 						btnText='Register'
