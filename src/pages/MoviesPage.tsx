@@ -8,7 +8,7 @@ import useLoginContext from '../hooks/useLoginContext'
 
 const MoviesPage = () => {
 	const { data = [], isLoading, isError } = useQuery('movies', getMovies)
-	const loginContext = useLoginContext()
+	const { login } = useLoginContext()
 
 
 	const columns: ColumnDef<Movie>[] = [
@@ -32,51 +32,55 @@ const MoviesPage = () => {
 	if (isError) return <span>Error encountered</span>
 
 	return (
-		<>
-			{loginContext.login
+		<div className='d-flex flex-column align-items-center'>
+			{login
 				? (
-					<table>
-						<thead>
-							{table.getHeaderGroups().map(headerGroup => (
-								<tr key={headerGroup.id}>
-									{headerGroup.headers.map(header => (
-										<th
-											key={header.id}
-											className='pe-4'
-										>
-											{flexRender(
-												header.column.columnDef.header,
-												header.getContext(),
-											)}
-										</th>
-									))}
-								</tr>
-							))}
-						</thead>
+					<>
+						<h1>Watch list</h1>
 
-						<tbody>
-							{table.getRowModel().rows.map(row => (
-								<tr key={row.id}>
-									{row.getVisibleCells().map(cell => (
-										<td
-											key={cell.id}
-											className='pe-4'
-										>
-											{flexRender(
-												cell.column.columnDef.cell,
-												cell.getContext(),
-											)}
-										</td>
-									))}
-								</tr>
-							))}
-						</tbody>
-					</table >
+						<table>
+							<thead>
+								{table.getHeaderGroups().map(headerGroup => (
+									<tr key={headerGroup.id}>
+										{headerGroup.headers.map(header => (
+											<th
+												key={header.id}
+												className='pe-4'
+											>
+												{flexRender(
+													header.column.columnDef.header,
+													header.getContext(),
+												)}
+											</th>
+										))}
+									</tr>
+								))}
+							</thead>
+
+							<tbody>
+								{table.getRowModel().rows.map(row => (
+									<tr key={row.id}>
+										{row.getVisibleCells().map(cell => (
+											<td
+												key={cell.id}
+												className='pe-4 border-bottom'
+											>
+												{flexRender(
+													cell.column.columnDef.cell,
+													cell.getContext(),
+												)}
+											</td>
+										))}
+									</tr>
+								))}
+							</tbody>
+						</table >
+					</>
 				)
 
 				: (
 					<>
-						<h1 className='h2'>Please log in first</h1>
+						<h1 className='h2'>Log in to see your movie list</h1>
 
 						<Link to={'/login'}>
 							<Button variant='success'>Login</Button>
@@ -85,7 +89,7 @@ const MoviesPage = () => {
 					</>
 				)
 			}
-		</>
+		</div>
 	)
 }
 
