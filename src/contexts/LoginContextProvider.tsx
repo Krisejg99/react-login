@@ -19,8 +19,6 @@ const LoginContextProvider: React.FC<IProps> = ({ children }) => {
 		setLogin(value)
 	}
 
-	console.log('login', login)
-
 	return (
 		<LoginContext.Provider value={{ login, changeLogin }}>
 			{children}

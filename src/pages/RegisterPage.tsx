@@ -18,8 +18,7 @@ const RegisterPage = () => {
 			return setInvalidRegister('Account already exists with that username')
 		}
 
-		const registeredUser = await createUser(username, password)
-		console.log(registeredUser)
+		createUser(username, password)
 
 		setSuccessfullRegister(username)
 	}

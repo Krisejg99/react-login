@@ -20,8 +20,6 @@ const LoginPage = () => {
 	const handleSubmit = async (username: string, password: string) => {
 		const user = await checkUserInDB(username)
 
-		console.log(user)
-
 		if (!user || user.password !== password) {
 			return setInvalidLogin('Incorrect password or username')
 		}
