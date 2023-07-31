@@ -5,7 +5,7 @@ import { Request, Response } from 'express'
 import prisma from '../prisma'
 
 /**
- * Get all resources
+ * Get all movies
  */
 export const index = async (req: Request, res: Response) => {
 	const movies = await prisma.movie.findMany()
@@ -13,25 +13,25 @@ export const index = async (req: Request, res: Response) => {
 }
 
 // /**
-//  * Get a single resource
+//  * Get a single movie
 //  */
 // export const show = async (req: Request, res: Response) => {
 // }
 
 // /**
-//  * Create a resource
+//  * Create a movie
 //  */
 // export const store = async (req: Request, res: Response) => {
 // }
 
 // /**
-//  * Update a resource
+//  * Update a movie
 //  */
 // export const update = async (req: Request, res: Response) => {
 // }
 
 // /**
-//  * Delete a resource
+//  * Delete a movie
 //  */
 // export const destroy = async (req: Request, res: Response) => {
 // }

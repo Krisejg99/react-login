@@ -5,7 +5,7 @@ import { Request, Response } from 'express'
 import prisma from '../prisma'
 
 /**
- * Get all resources
+ * Get all users
  */
 export const index = async (req: Request, res: Response) => {
 	const users = await prisma.user.findMany()
@@ -14,7 +14,7 @@ export const index = async (req: Request, res: Response) => {
 }
 
 /**
- * Get a single resource
+ * Get a single user
  */
 export const show = async (req: Request, res: Response) => {
 	const user = await prisma.user.findUnique({
@@ -27,7 +27,7 @@ export const show = async (req: Request, res: Response) => {
 }
 
 /**
- * Create a resource
+ * Create a user
  */
 export const store = async (req: Request, res: Response) => {
 	const user = await prisma.user.create({
@@ -37,19 +37,17 @@ export const store = async (req: Request, res: Response) => {
 		},
 	})
 
-	console.log(user)
-
 	res.send(user)
 }
 
 // /**
-//  * Update a resource
+//  * Update a user
 //  */
 // export const update = async (req: Request, res: Response) => {
 // }
 
 // /**
-//  * Delete a resource
+//  * Delete a user
 //  */
 // export const destroy = async (req: Request, res: Response) => {
 // }
